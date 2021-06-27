@@ -1,0 +1,53 @@
+********************COMMANDS FOR DEMO********************
+COPY THE COMMAND TO RUN IN MASTER & NODES
+sudo su
+apt-get update
+apt-get install apt-transport-https
+
+
+apt install docker.io -y
+docker --version
+systemctl start docker
+systemctl enable docker
+
+curl -s https://packages.cloud.google.com/apt/doc/apt-key.gpg | sudo apt-key add
+
+
+nano /etc/apt/sources.list.d/kubernetes.list
+
+add this link text <deb http://apt.kubernetes.io/ kubernetes-xenial main> to the kubernetes.list and save the file.
+
+apt-get update
+
+apt-get install -y kubelet kubeadm kubectl kubernetes-cni
+
+
+BOOTSTRAPPING THE MASTER NODE (IN MASTER)
+
+kubeadm init
+ 
+
+COPY THE COMMAND TO RUN IN NODES & SAVE IN NOTEPAD (IN MASTER)
+
+mkdir -p $HOME/.kube
+cp -i /etc/kubernetes/admin.conf $HOME/.kube/config
+chown $(id -u):$(id -g) $HOME/.kube/config
+
+kubectl apply -f https://raw.githubusercontent.com/coreos/flannel/master/Documentation/kube-flannel.yml
+kubectl apply -f https://raw.githubusercontent.com/coreos/flannel/master/Documentation/k8s-manifests/kube-flannel-rbac.yml
+
+
+
+CONFIGURE WORKER NODES (IN NODES)
+
+COPY LONG CODE PROVIDED MY MASTER IN NODE NOW LIKE CODE GIVEN BELOW
+
+e.g- kubeadm join 172.31.6.165:6443 --token kl9fhu.co2n90v3rxtqllrs --discovery-token-ca-cert-hash sha256:b0f8003d23dbf445e0132a53d7aa1922bdef8d553d9eca06e65c928322b3e7c0
+
+MyMasterCode to attch Nodes to Master k8s: kubeadm join 172.31.41.231:6443 --token 82i4ga.yzynfd5eioa0mheu --discovery-token-ca-cert-hash sha256:a628b2b162e2b91c302b69634093c7c1c79bfbee18e9e5e2749c9a951b5308d8
+
+
+GO TO MASTER AND RUN THIS COMMAND
+kubectl get nodes
+
+***********************END*************************************
